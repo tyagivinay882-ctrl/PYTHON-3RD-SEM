@@ -1,0 +1,71 @@
+books = {101: "Python", 102: "Java", 103: "C++"}
+available = set(books.keys())
+records = []
+count = {}
+
+while True:
+    print("\n1. Borrow Book")
+    print("2. Return Book")
+    print("3. Display Books")
+    print("4. Show Records")
+    print("5. Exit")
+
+    ch = int(input("Enter choice: "))
+
+    if ch == 1:
+        s = input("Enter student ID: ")
+        b = int(input("Enter book ID: "))
+
+        if b not in books:
+            print("Book does not exist")
+        elif b not in available:
+            print("Book is already borrowed")
+        else:
+            available.remove(b)
+            records.append((s, b, "Borrowed"))
+            count[s] = count.get(s, 0) + 1
+            print("Book borrowed successfully")
+
+    elif ch == 2:
+        s = input("Enter student ID: ")
+        b = int(input("Enter book ID: "))
+
+        if b not in books:
+            print("Book does not exist")
+        elif b in available:
+            print("Book is already available")
+        else:
+            borrowed = False
+            for r in records:
+                if r[0] == s and r[1] == b and r[2] == "Borrowed":
+                    borrowed = True
+                elif r[0] == s and r[1] == b and r[2] == "Returned":
+                    borrowed = False
+
+            if borrowed:
+                available.add(b)
+                records.append((s, b, "Returned"))
+                print("Book returned successfully")
+            else:
+                print("This student has not borrowed this book")
+
+    elif ch == 3:
+        print("Available Books:")
+        for b in available:
+            print(b, books[b])
+
+        print("Borrowed Books:")
+        for b in books:
+            if b not in available:
+                print(b, books[b])
+
+    elif ch == 4:
+        print("Records:", records)
+        print("Borrow Count:", count)
+
+    elif ch == 5:
+        print("Thank you!")
+        break
+
+    else:
+        print("Invalid choice")
